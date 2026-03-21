@@ -15,7 +15,7 @@ use Carp ();
 use Scalar::Util qw(blessed reftype refaddr);
 #use Devel::Peek;
 
-our $VERSION = '4.17_01';
+our $VERSION = '4.18';
 
 our @EXPORT = qw(encode_json decode_json from_json to_json);
 
@@ -450,7 +450,8 @@ sub allow_bigint {
         $self->_down_indent() if ($self->{PROPS}[P_INDENT]);
 
         return '[]' unless @res;
-        return '[' . $pre . join( ",$pre", @res ) . $post . ']';
+        my $space = $pre eq '' && $self->{PROPS}[P_SPACE_AFTER] ? ' ' : '';
+        return '[' . $pre . join( ",$space$pre", @res ) . $post . ']';
     }
 
     sub _looks_like_number {
